@@ -1,29 +1,30 @@
-// ==================================================================
-// LOAD DATA
-// We are linking our routes to a series of "data" sources. 
-// These data sources hold arrays of information on table-data, waitinglist, etc.
-// ==================================================================
 
-var friendData 		= require('../data/friends.js');
-var path 			= require('path');
+var friendData = require('../data/friends.js');
+var path = require('path');
+var bodyParser = require('body-parser');
 
 
 
 
-// ==================================================================
+// ================================================================
 // ROUTING
-// ==================================================================
+// ================================================================
 
 module.exports = function(app){
+	
+	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded({extended: true}));
+	app.use(bodyParser.text());
+	app.use(bodyParser.json({type:'application/vnd.api+json'}));
 
 	// API GET Requests
 	// Below code handles when users "visit" a page. 
 	// In each of the below cases when a user visits a link 
 	// (ex: localhost:PORT/api/admin... they are shown a JSON of the data in the table) 
-	// -------------------------------------------------------------------------
+	// -----------------------------------------------------------
 
 	app.get('/api/friends', function(req, res){
-		res.json(friendData);
+		res.json(userData);
 	});
 
 
@@ -33,22 +34,25 @@ module.exports = function(app){
 	// ...the JSON is pushed to the appropriate Javascript array
 	// (ex. User fills out a reservation request... this data is then sent to the server...
 	// Then the server saves the data to the tableData array)
-	// -------------------------------------------------------------------------
+	// -----------------------------------------------------------
 
 	app.post('/api/friends', function(req, res){
 
 		// Note the code here. Our "server" will respond to requests and let users know if they have a table or not.
 		// It will do this by sending out the value "true" have a table 
-		
-			friendData.push(req.body);
+			var newPerson = req.body;
+			userData.push(req.body);
 			res.json(true); // KEY LINE
+
+			console.log(userData)
 		
 
 		
 
 	});
 
-	// ------------------------------------------------------------------------
+	// -----------------------------------------------------------
+
 	// I added this below code so you could clear out the table while working with the functionality.
 	// Don't worry about it!
 
