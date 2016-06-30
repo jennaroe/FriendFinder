@@ -1,1 +1,26 @@
-{}
+{
+  "name": "friendfinder",
+  "version": "1.0.0",
+  "description": "Find your new best friend just by answering a few questions\"",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.14.0",
+    "body-parser": "^1.15.2",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "Hello! ",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jennaroe/FriendFinder.git"
+  },
+  "author": "Jennifer Hernandez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jennaroe/FriendFinder/issues"
+  },
+  "homepage": "https://github.com/jennaroe/FriendFinder#readme"
+}
