@@ -7,6 +7,7 @@ var path = require('path');
 // Sets up the Express App
 // =============================================================
 var app = express();
+
 var PORT = 3000;
 
 // Sets up the Express app to handle data parsing 
@@ -25,4 +26,4 @@ require('./app/routing/html-routes.js')(app);
 // =============================================================
 app.listen(PORT, function(){
 	console.log('App listening on PORT ' + PORT);
-})
+});

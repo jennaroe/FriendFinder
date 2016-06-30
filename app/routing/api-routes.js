@@ -1,65 +1,59 @@
-
-var friendData = require('../data/friends.js');
 var path = require('path');
-var bodyParser = require('body-parser');
+//var modal = require('jquery.modal');
 
-
-
-
-// ================================================================
-// ROUTING
-// ================================================================
+//require the data
+var friends = require('../data/friends.js').friends;
+var totalDiff = 0;
+var allDiffs = [];
+var bestMatch = 0;
 
 module.exports = function(app){
-	
-	app.use(bodyParser.json());
-	app.use(bodyParser.urlencoded({extended: true}));
-	app.use(bodyParser.text());
-	app.use(bodyParser.json({type:'application/vnd.api+json'}));
 
-	// API GET Requests
-	// Below code handles when users "visit" a page. 
-	// In each of the below cases when a user visits a link 
-	// (ex: localhost:PORT/api/admin... they are shown a JSON of the data in the table) 
-	// -----------------------------------------------------------
+	app.get('/api/friends', function(request, response){
 
-	app.get('/api/friends', function(req, res){
-		res.json(userData);
+		response.json(friends); 
 	});
 
+	app.post('/api/friends', function(request, response){
 
-	// API POST Requests
-	// Below code handles when a user submits a form and thus submits data to the server.
-	// In each of the below cases, when a user submits form data (a JSON object)
-	// ...the JSON is pushed to the appropriate Javascript array
-	// (ex. User fills out a reservation request... this data is then sent to the server...
-	// Then the server saves the data to the tableData array)
-	// -----------------------------------------------------------
+		for(var j=0; j < friends.length; j++){
 
-	app.post('/api/friends', function(req, res){
+			for(var i=0; i < 10; i++){
 
-		// Note the code here. Our "server" will respond to requests and let users know if they have a table or not.
-		// It will do this by sending out the value "true" have a table 
-			var newPerson = req.body;
-			userData.push(req.body);
-			res.json(true); // KEY LINE
+				totalDiff += Math.abs(parseInt(request.body.scores[i]) - parseInt(friends[j].scores[i]));
+			}
+			allDiffs.push(totalDiff);
+			totalDiff = 0;
+		}
 
-			console.log(userData)
-		
+		for(var x = 1; x < allDiffs.length; x++){
 
-		
+			if(allDiffs[x] < allDiffs[bestMatch])
+				bestMatch = x;
+		}	
+
+		var newFriend = request.body;
+
+		friends.push(newFriend);
+
+		allDiffs.length = 0;
+
+		response.send(true);
+
+
+		console.log("best match is " + bestMatch);
+
 
 	});
 
-	// -----------------------------------------------------------
-
-	// I added this below code so you could clear out the table while working with the functionality.
-	// Don't worry about it!
-
-	app.post('/api/clear', function(req, res){
-		// Empty out the arrays of data
-		friendData = [];
-
-		console.log(tableData);
-	})
 }
+
+// 	// -----------------------------------------------------------
+
+// 	app.post('/api/clear', function(req, res){
+// 		// Empty out the arrays of data
+// 		userData = [];
+
+// 		console.log(tableData);
+// 	})
+// }
